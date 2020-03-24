@@ -1,0 +1,45 @@
+<configuration>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+		<file>target/tubo.log</file>
+
+		<encoder>
+            <charset>UTF-8</charset>
+			<!-- pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern -->
+            <pattern>%d %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="tubo" level="ERROR" />
+	<logger name="org.apache.camel.component.file"									level="INFO" />
+	<!-- logger name="org.apache.camel.component.file.FileConsumer"					level="INFO" / -->
+	<!-- logger name="org.apache.camel.component.file.GenericFileConverter"			level="INFO" / -->
+	<logger name="org.apache.camel.impl.DefaultStreamCachingStrategy"				level="INFO" />
+	<logger name="org.apache.camel.util.IntrospectionSupport"						level="INFO" />
+	<logger name="org.apache.camel.management.DefaultManagementAgent"				level="INFO" />
+	<logger name="org.apache.camel.spring.SpringCamelContext"						level="INFO" />
+	<logger name="org.apache.camel.processor.DefaultErrorHandler"					level="INFO" />
+	<logger name="org.apache.camel.core.xml"										level="INFO" />
+	<logger name="org.apache.camel.spring.handler.CamelNamespaceHandler"			level="INFO" />
+	<logger name="org.apache.camel.impl.converter.AnnotationTypeConverterLoader"	level="INFO" />
+	<logger name="org.apache.camel.processor.interceptor.DefaultChannel"			level="INFO" />
+	<logger name="org.apache.camel.model.LogDefinition"								level="INFO" />
+	<logger name="org.apache.camel.impl.RouteService"								level="INFO" />
+	<!-- logger name="org.apache.camel" level="INFO"/ -->
+	<!-- logger name="org.apache.camel.impl.converter" level="INFO"/ -->
+	<!-- logger name="org.apache.camel.management" level="INFO"/ -->
+	<!-- logger name="org.apache.camel.impl.DefaultPackageScanClassResolver" level="INFO"/ -->
+	<!-- logger name="org.springframework" level="INFO"/ -->
+
+	<root level="${log.level:-INFO}">
+		<!-- appender-ref ref="STDOUT"/ -->
+		<appender-ref ref="${appender.ref:-FILE}"/>
+	</root>
+
+</configuration>

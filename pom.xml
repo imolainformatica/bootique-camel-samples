@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>it.imolinfo.cura</groupId>
+	<artifactId>tubo</artifactId>
+	<packaging>war</packaging>
+	<version>1.0.11</version>
+
+	<properties>
+		<project.source.charset>UTF-8</project.source.charset>
+		<project.source.encoding>UTF-8</project.source.encoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<java.version.source>1.8</java.version.source>
+		<java.version.target>1.8</java.version.target>
+
+		<bouncycastle.version>1.51</bouncycastle.version>
+		<camel.version>2.17.7</camel.version>
+	</properties>
+
+	<name>tubo</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-servletlistener</artifactId>
+			<version>${camel.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-servlet</artifactId>
+			<version>${camel.version}</version>
+			<exclusions>
+
+				<!--
+					 Per il logging usiamo SLF4J: evitiamo mix di framework per
+					 scongiurare contese sul ClassLoader da parte dei thread
+					 (http://stackoverflow.com/questions/15543521/mixed-usage-of-log4j-and-commons-logging-causes-a-class-loading-deadlock)
+				 -->
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+
+				<!-- "Offending JAR" for J2EE class loaders -->
+				<exclusion>
+					<groupId>javax.servlet</groupId>
+					<artifactId>javax.servlet-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-http</artifactId>
+			<version>${camel.version}</version>
+
+			<!--
+				 Per il logging usiamo SLF4J: evitiamo mix di framework per
+				 scongiurare contese sul ClassLoader da parte dei thread
+				 (http://stackoverflow.com/questions/15543521/mixed-usage-of-log4j-and-commons-logging-causes-a-class-loading-deadlock)
+			 -->
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-base64</artifactId>
+			<version>${camel.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>it.curagasandpower</groupId>
+			<artifactId>camel-tools</artifactId>
+			<version>2.17-2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcpg-jdk15on</artifactId>
+			<version>${bouncycastle.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.yaml</groupId>
+			<artifactId>snakeyaml</artifactId>
+			<version>1.14</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.12</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>1.7.12</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.1.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-test</artifactId>
+			<version>${camel.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<defaultGoal>install</defaultGoal>
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<encoding>${project.source.encoding}</encoding>
+					<source>${java.version.source}</source>
+					<target>${java.version.target}</target>
+					<showDeprecation>true</showDeprecation>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<webResources>
+						<resource>
+							<filtering>true</filtering>
+							<directory>src/main/webapp</directory>
+							<includes>
+								<include>**/web.xml</include>
+							</includes>
+						</resource>
+					</webResources>
+					<warSourceDirectory>src/main/webapp</warSourceDirectory>
+					<webXml>src/main/webapp/WEB-INF/web.xml</webXml>
+				</configuration>
+			</plugin>
+
+			<!--
+				 Limitiamo la heap per testare l'OutOfMemoryError comprimendo
+				 stream grandi (vedi it.imolinfo.cura.tubo.DeflateTest), usando
+				 una heap "piccola" per velocizzare l'esecuzione del test che
+				 altrimenti impiegherebbe decine di secondi
+			  -->
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.18.1</version>
+				<configuration>
+					<argLine>-Xmx32m</argLine>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.18.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<phase>pre-integration-test</phase>
+						<configuration>
+							<target>
+								<delete dir="${project.build.directory}/archive" failonerror="false" />
+								<delete dir="${project.build.directory}/errors" failonerror="false" />
+								<delete dir="${project.build.directory}/inbox" failonerror="false" />
+								<delete dir="${project.build.directory}/inbox-receipt" failonerror="false" />
+								<delete dir="${project.build.directory}/inbox-duplicated" failonerror="false" />
+								<delete dir="${project.build.directory}/notification" failonerror="false" />
+								<delete dir="${project.build.directory}/outbox" failonerror="false" />
+								<delete dir="${project.build.directory}/outbox-receipt" failonerror="false" />
+
+								<delete dir="${project.build.directory}/outbox-to-nowhere" failonerror="false" />
+
+								<mkdir dir="${project.build.directory}/archive" />
+								<mkdir dir="${project.build.directory}/errors" />
+								<mkdir dir="${project.build.directory}/inbox" />
+								<mkdir dir="${project.build.directory}/inbox-receipt" />
+								<mkdir dir="${project.build.directory}/inbox-duplicated" />
+								<mkdir dir="${project.build.directory}/notification" />
+								<mkdir dir="${project.build.directory}/outbox" />
+								<mkdir dir="${project.build.directory}/outbox-receipt" />
+
+								<mkdir dir="${project.build.directory}/outbox-to-nowhere" />
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<version>1.4.15</version>
+				<executions>
+					<execution>
+						<id>start-container</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>start</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>stop-container</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<container>
+						<containerId>tomcat6x</containerId>
+						<zipUrlInstaller>
+							<url>http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.33/bin/apache-tomcat-6.0.33.tar.gz</url>
+						</zipUrlInstaller>
+						<output>${project.build.directory}/container.log</output>
+						<append>false</append>
+						<log>${project.build.directory}/cargo.log</log>
+					</container>
+					<configuration>
+						<type>standalone</type>
+						<home>${project.build.directory}/tomcat6x</home>
+						<properties>
+							<cargo.jvmargs>-DTUBO_CONFIGURATION_PATH=${basedir}/src/test/integrationTests.yml</cargo.jvmargs>
+						</properties>
+					</configuration>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>external.atlassian.jgitflow</groupId>
+				<artifactId>jgitflow-maven-plugin</artifactId>
+				<version>1.0-m5.1</version>
+				<configuration>
+					<noDeploy>true</noDeploy>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

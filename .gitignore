@@ -1,0 +1,11 @@
+.settings
+.project
+.classpath
+archive
+archivemock
+.tmp
+bin
+.camel
+*.iml
+.idea
+target

@@ -1,0 +1,22 @@
+receivers:
+   - name		: FromDaltdox
+     path		: /daltdox
+     targetFolder	: ../../target/inbox
+     logFile		: ../../target/receiver.log
+
+transmitters:
+   - name                 : ToDaltdox
+     targetUrl            : http://localhost:8080/tubo/daltdox
+     localFolder          : ../../target/outbox
+     archiveFolder        : ../../target/archive
+     errorFolder          : ../../target/errors
+     logFile              : ../../target/transmitter.log
+     deliveryNotification : ../../target/notification
+
+   - name                 : ToNowhere
+     targetUrl            : http://localhost:8080/tubo/NOT_EXISTING_URL
+     localFolder          : ../../target/outbox-to-nowhere
+     archiveFolder        : ../../target/archive
+     errorFolder          : ../../target/errors
+     logFile              : ../../target/transmitter.log
+     deliveryNotification : ../../target/notification
