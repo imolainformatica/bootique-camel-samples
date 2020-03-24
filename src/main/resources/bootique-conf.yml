@@ -1,0 +1,30 @@
+log:
+  level: debug
+  loggers:
+    it.imolainformatica:
+      level: debug
+    org.apache.camel.component.servlet:
+      level: trace
+    tubo:
+      level: error
+    org.apache.http:
+      level: info
+    org.apache.camel.component.file:
+      level: info
+    org.apache.camel.impl.engine.DefaultStreamCachingStrategy:
+      level: info
+    org.apache.camel.util.IntrospectionSupport:
+      level: info
+  appenders:
+    - type: console
+      logFormat: '%d %-4relative [%thread] %-5level %logger{35} - %msg%n'
+      target: stdout
+    - type: file
+      logFormat: '%d %-4relative [%thread] %-5level %logger{35} - %msg%n'
+      file: target/tubo.log
+
+jetty:
+  context: "/tubo"
+
+camel:
+  requiresHttpTransportServlet: true

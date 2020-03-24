@@ -32,6 +32,6 @@ public class ProcessRouteBuilder extends RouteBuilder {
 		.to("file://" + configuration.targetFolder + "?fileName=$simple{file:name}")
 		.log(LoggingLevel.INFO, configuration.logger, "receiver:\"" + configuration.name + "\", "
 			+ "filename=\"$simple{file:name}\", "
-			+ "file=\" ${property[" + TARGET_FOLDER + "]}/$simple{file:name}\",");
+			+ "file=\" ${exchangeProperty[" + TARGET_FOLDER + "]}/$simple{file:name}\",");
 	}
 }

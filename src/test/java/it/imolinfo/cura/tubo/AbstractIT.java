@@ -1,7 +1,13 @@
 package it.imolinfo.cura.tubo;
 
+import io.bootique.BQRuntime;
+import io.bootique.di.BQModule;
+import io.bootique.test.junit.BQTestFactory;
+import it.imolainformatica.bootique.camel.CamelModule;
 import org.apache.commons.io.FileUtils;
+import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +28,10 @@ public abstract class AbstractIT {
 	private static final Logger LOGGER
 			= LoggerFactory.getLogger(AbstractIT.class);
 
+	private BQRuntime runtime;
+	@Rule
+	public BQTestFactory testFactory = new BQTestFactory().autoLoadModules();
+
 	protected AbstractIT() {
 	}
 
@@ -34,6 +44,29 @@ public abstract class AbstractIT {
 		deleteDirContent(OUTBOX_DIR);
 
 		deleteDirContent(OUTBOX_TO_NOWHERE_DIR);
+	}
+
+	private BQRuntime startApp(BQModule module) {
+		BQRuntime runtime = testFactory.app("-s")
+				.module(module)
+				.createRuntime();
+		runtime.run();
+
+		return runtime;
+	}
+
+	@Before
+	public void initAndStartBootique() {
+		System.setProperty("TUBO_CONFIGURATION_PATH","src/test/integrationTests.yml");
+		runtime=startApp(new TuboApplication());
+	}
+
+	@After
+	public void shutdownBootique() {
+
+		if (runtime!=null) {
+			runtime.shutdown();
+		}
 	}
 
 	private static void deleteDirContent(final File dir)
