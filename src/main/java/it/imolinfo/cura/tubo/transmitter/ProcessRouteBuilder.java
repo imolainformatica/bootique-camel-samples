@@ -22,7 +22,7 @@ public final class ProcessRouteBuilder extends RouteBuilder {
 		Base64DataFormat	base64 = new Base64DataFormat();
         ProcessorDefinition route;
 
-        base64.setLineSeparator("");
+        //base64.setLineSeparator("");
 
         route = from("file://" + configuration.localFolder + "/"
 				+ "?delete=false"

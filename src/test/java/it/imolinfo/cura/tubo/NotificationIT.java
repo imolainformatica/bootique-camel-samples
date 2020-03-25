@@ -30,7 +30,7 @@ public class NotificationIT extends AbstractIT {
         final File notification = new File(NOTIFICATION_DIR, "testNotification.bin");
 
         try (FileOutputStream file = new FileOutputStream(new File(cartella, "testNotification.bin"))) {
-            final byte[] content = new byte[10_000_000];
+            final byte[] content = new byte[10_000];
 
             new Random().nextBytes(content);
             file.write(content);
@@ -39,7 +39,6 @@ public class NotificationIT extends AbstractIT {
 
         assertTrue("File di notifica " + notification + " non trovato", notification.exists());
         assertEquals("File di notifica non vuoto", 0, notification.length());
-
         // XXX Queste verifiche andrebbero in un altro test, dedicato
         assertFileExists(new File(INBOX_DIR, "cartella/testNotification.bin"));
         assertFileExists(new File(ARCHIVE_DIR, "cartella/testNotification.bin"));

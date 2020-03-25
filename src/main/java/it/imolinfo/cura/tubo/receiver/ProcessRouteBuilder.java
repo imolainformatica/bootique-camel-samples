@@ -21,7 +21,7 @@ public class ProcessRouteBuilder extends RouteBuilder {
 	@Override
 	public void configure() throws Exception {
 	Base64DataFormat base64 = new Base64DataFormat();
-
+	//base64.setLineSeparator("");
 	from("direct:" + configuration.routeName).streamCaching()
 		.setHeader(Exchange.FILE_NAME, header(Configuration.Headers.FILE_NAME))
 		.process(new Inflate())

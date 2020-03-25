@@ -57,7 +57,7 @@ public abstract class AbstractIT {
 
 	@Before
 	public void initAndStartBootique() {
-		System.setProperty("TUBO_CONFIGURATION_PATH","src/test/integrationTests.yml");
+		//System.setProperty("TUBO_CONFIGURATION_PATH","src/test/integrationTests.yml");
 		runtime=startApp(new TuboApplication());
 	}
 
