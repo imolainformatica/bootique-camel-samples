@@ -30,3 +30,5 @@ jetty:
 
 camel:
   requiresHttpTransportServlet: true
+  useMDCLogging: true
+  allowUseOriginalMessage: false

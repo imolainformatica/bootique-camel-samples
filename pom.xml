@@ -25,11 +25,6 @@
 	<name>tubo</name>
 
 	<dependencies>
-<!--		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-servletlistener</artifactId>
-			<version>${camel.version}</version>
-		</dependency>-->
 
 		<dependency>
 			<groupId>org.apache.camel</groupId>
@@ -79,18 +74,10 @@
 			<version>${camel.version}</version>
 		</dependency>
 
-<!--
-		<dependency>
-			<groupId>it.curagasandpower</groupId>
-			<artifactId>camel-tools</artifactId>
-			<version>2.17-2</version>
-		</dependency>
--->
-
 		<dependency>
 			<groupId>it.imolainformatica.bootique</groupId>
 			<artifactId>bootique-camel</artifactId>
-			<version>0.3.0</version>
+			<version>0.4.0</version>
 		</dependency>
 
 		<dependency>
@@ -158,25 +145,6 @@
 					<showDeprecation>true</showDeprecation>
 				</configuration>
 			</plugin>
-
-<!--			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.6</version>
-				<configuration>
-					<webResources>
-						<resource>
-							<filtering>true</filtering>
-							<directory>src/main/webapp</directory>
-							<includes>
-								<include>**/web.xml</include>
-							</includes>
-						</resource>
-					</webResources>
-					<warSourceDirectory>src/main/webapp</warSourceDirectory>
-					<webXml>src/main/webapp/WEB-INF/web.xml</webXml>
-				</configuration>
-			</plugin>-->
 
 			<!--
 				 Limitiamo la heap per testare l'OutOfMemoryError comprimendo
@@ -248,46 +216,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
-<!--			<plugin>
-				<groupId>org.codehaus.cargo</groupId>
-				<artifactId>cargo-maven2-plugin</artifactId>
-				<version>1.4.15</version>
-				<executions>
-					<execution>
-						<id>start-container</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>start</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>stop-container</id>
-						<phase>post-integration-test</phase>
-						<goals>
-							<goal>stop</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<container>
-						<containerId>tomcat6x</containerId>
-						<zipUrlInstaller>
-							<url>http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.33/bin/apache-tomcat-6.0.33.tar.gz</url>
-						</zipUrlInstaller>
-						<output>${project.build.directory}/container.log</output>
-						<append>false</append>
-						<log>${project.build.directory}/cargo.log</log>
-					</container>
-					<configuration>
-						<type>standalone</type>
-						<home>${project.build.directory}/tomcat6x</home>
-						<properties>
-							<cargo.jvmargs>-DTUBO_CONFIGURATION_PATH=${basedir}/src/test/integrationTests.yml</cargo.jvmargs>
-						</properties>
-					</configuration>
-				</configuration>
-			</plugin>-->
 
 			<plugin>
 				<groupId>external.atlassian.jgitflow</groupId>
