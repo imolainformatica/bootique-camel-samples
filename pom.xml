@@ -23,6 +23,15 @@
 	</properties>
 
 	<name>tubo</name>
+	<repositories>
+		<repository>
+			<id>bootique2</id>
+			<name>bootique-2</name>
+			<snapshots><enabled>true</enabled></snapshots>
+			<releases><enabled>false</enabled></releases>
+			<url>https://maven.objectstyle.org/nexus/content/repositories/bootique-snapshots/</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
 
